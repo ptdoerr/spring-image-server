@@ -1,7 +1,6 @@
 package com.example.imageserver;
 
 import java.io.File;
-import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import org.springframework.core.io.InputStreamResource;
@@ -58,60 +57,9 @@ public class ImageServerApplication {
 	}
 
 	@CrossOrigin(origins = "http://localhost:8081")
-	@GetMapping("/s3-maps-list")
-	public String s3MapsList() {
-		String[] pathnames = new String[] { "No Files Found"};
-		Gson gson = new Gson();
-
-
-		try {
-			File f = new File(imageDir);
-			System.out.printf("dir = " +f.getPath());
-			System.out.printf("files = " +f.list());
-			pathnames = f.list();
-			
-		} catch (Exception e) {
-			pathnames[0] = "No Files Found";
-		}
-
-		if(pathnames != null) {
-			return gson.toJson(pathnames);
-		} else {
-			return gson.toJson("No Files Found");
-		}	
-	}
-
-	@CrossOrigin(origins = "http://localhost:8081")
 	@GetMapping("/map-image-file")
 	@ResponseBody
 	public ResponseEntity<InputStreamResource> mapImageFile(@RequestParam(value = "fname") String fname) {
-		MediaType contentType = MediaType.IMAGE_JPEG;
-		FileInputStream in = null;
-		System.out.println("Image filename: " +fname);
-
-
-		String imagePath = imageDir +"/" +fname;
-		System.out.println("Looking for image: " +imagePath);
-		
-		try {
-			in = new FileInputStream(imagePath);
-		} catch (FileNotFoundException ex) {
-			System.err.println(imagePath +": Not Found");
-		}
-
-		if(in != null) {
-			return ResponseEntity.ok()
-      			.contentType(contentType)
-      			.body(new InputStreamResource(in));
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-		}
-	}
-
-	@CrossOrigin(origins = "http://localhost:8081")
-	@GetMapping("/s3-map-image-file")
-	@ResponseBody
-	public ResponseEntity<InputStreamResource> s3MapImageFile(@RequestParam(value = "fname") String fname) {
 		MediaType contentType = MediaType.IMAGE_JPEG;
 		FileInputStream in = null;
 		System.out.println("Image filename: " +fname);
