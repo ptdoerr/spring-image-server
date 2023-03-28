@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>Demo</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width"/>
+    <base href="/"/>
+    <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css"/>
+    <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $.get("/user", function(data) {
+            alert(data.name);
+            $("#user").html(data.name);
+            $(".unauthenticated").hide()
+            $(".authenticated").show()
+        });
+
+        var logout = function() {
+            alert("calling logout");
+            $.post("/logout", function() {
+                $("#user").html('');
+                $(".unauthenticated").show();
+                $(".authenticated").hide();
+            })
+            return true;
+        }
+
+        function getMapImage() {
+        const imageDisplayUrl = 'http://localhost:8080/s3-map-image-file';
+
+        var selectedElement = document.getElementById("file-select")
+        var selectedFname = selectedElement.value;
+        var imageElement = document.getElementById("map-image");
+
+        //alert("value:" +selectedElement.value +" - text: " +selectedElement.text)
+
+        var fullUrl = imageDisplayUrl +"?fname=" +selectedFname;
+        console.log("Fetching Image: " +fullUrl);
+        
+        fetch(fullUrl)
+            .then(res => res.blob())
+            .then(result => {
+                console.log(result);
+                imageObjectURL = URL.createObjectURL(result);
+                imageElement.src = imageObjectURL;
+            })
+            .catch(err=>console.log(err))         
+    }
+
+    </script>
+</head>
+<body>
+	<h1>Demo</h1>
+	<div class="container unauthenticated">
+        With GitHub: <a href="/oauth2/authorization/github">click here</a>
+    </div>
+    <div class="container authenticated" style="display:none">
+        Logged in as: <span id="user"></span>
+
+        <h2> Image Browser </h2>
+
+        <!-- Quick function to query map images from Spring Boot service. 
+            Currently only works on local machine. Added services to get images 
+            from S3 -->
+
+        <p>Select Map Image</p>
+        <p id="image-list" style="border: 2px">
+   
+        </p>
+
+        <button type ="button" onclick="getMapImage()" >View Image</button>
+
+        <script >
+            //print("In getMapImageList()");
+            console.log("In getMapImageList()");
+            const xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function() {
+                if (xmlhttp.readyState === XMLHttpRequest.DONE) {
+                    console.log(typeof xmlhttp.responseText);
+                    console.log(xmlhttp.responseText);
+                }
+            }
+            xmlhttp.open('GET', 'http://localhost:8080/s3-maps-list', true);
+            xmlhttp.setRequestHeader('Accept', 'application/json');
+            xmlhttp.send(null);       
+
+            xmlhttp.onload = function() {
+                const myObj = JSON.parse(this.responseText);
+                let text = "<select id='file-select'>"
+                for (let x in myObj) {
+                    text += "<option>" + myObj[x] + "</option>";
+                }
+                text += "</select>"
+                document.getElementById("image-list").innerHTML = text;
+            }
+        </script>
+
+        <div id="map-image-div" style="width: 800px;height: 600px;">
+            <img id="map-image"/>
+        </div>
+<!--
+        <div>
+            <button onClick="logout()" class="btn btn-primary">Logout</button>
+        </div>
+    </div>
+-->
+</body>
+</html>
