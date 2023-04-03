@@ -2,9 +2,12 @@
 
 
 deploy-job:
+  image: maven:3-jdk-17
   stage: deploy
+  services:
+    - docker:dind
   script:
-    - ./mvnw spring-boot:build-image -DskipTests
+    - "mvn spring-boot:build-image -DskipTests"
     - docker login --username=$DOCKER_USER --password=$DOCKER_PASS
     - docker tag spring-image-server:0.0.1-SNAPSHOT pdoerr/spring-image-server:latest
     - docker push pdoerr/spring-image-server:latest
