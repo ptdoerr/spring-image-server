@@ -8,8 +8,8 @@ deploy-job:
   services:
     - docker:dind
   script:
-    - echo "Loggin into docker"
-    - docker login --username=$DOCKER_USER --password=$DOCKER_PASS
+    - echo "Logging into docker"
+    #- docker login --username=$DOCKER_USER --password=$DOCKER_PASS
     - echo "Running Maven spring-boot:build-image task"
     - "mvn spring-boot:build-image -DskipTests"
     - echo "Changing image tag to pdoerr/spring-image-server:latest"
