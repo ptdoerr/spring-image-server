@@ -1,0 +1,12 @@
+services:
+  image-server:
+    image: pdoerr/spring-image-server:latest
+    container_name: spring-image-server
+
+    ports:
+      - 8080:8080
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+      GITHUB_CLIENT_SECRET: ${GITHUB_CLIENT_SECRET}

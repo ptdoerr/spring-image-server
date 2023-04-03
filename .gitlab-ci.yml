@@ -1,0 +1,9 @@
+# .gitlab_ci.yml
+
+
+deploy-job:
+  stage: deploy
+  script:
+    - ./mvnw spring-boot:build-image -DskipTests
+    - docker tag spring-image-server:0.0.1-SNAPSHOT pdoerr/spring-image-server:latest
+    - docker push pdoerr/spring-image-server:latest

@@ -142,6 +142,7 @@ public class ImageServerApplication  {
 		System.out.println("in s3MapsList, getting client");
 		s3 = getClient();
 
+		System.out.println("in s2-maps-list()");
        	try {
 			System.out.println("Getting objects for bucket: " +s3ImageBucket);
           	ListObjectsRequest listObjects = ListObjectsRequest

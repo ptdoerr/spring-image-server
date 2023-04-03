@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <title>Demo</title>
+    <title>Spring Image Server</title>
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width"/>
     <base href="/"/>
@@ -29,42 +29,51 @@
         }
 
         function getMapImage() {
-        const imageDisplayUrl = 'http://localhost:8080/s3-map-image-file';
+            const imageDisplayUrl = '/s3-map-image-file';
 
-        var selectedElement = document.getElementById("file-select")
-        var selectedFname = selectedElement.value;
-        var imageElement = document.getElementById("map-image");
+            var selectedElement = document.getElementById("file-select")
+            var selectedFname = selectedElement.value;
+            var imageElement = document.getElementById("map-image");
 
-        //alert("value:" +selectedElement.value +" - text: " +selectedElement.text)
+            //alert("value:" +selectedElement.value +" - text: " +selectedElement.text)
 
-        var fullUrl = imageDisplayUrl +"?fname=" +selectedFname;
-        console.log("Fetching Image: " +fullUrl);
+            var fullUrl = imageDisplayUrl +"?fname=" +selectedFname;
+            console.log("Fetching Image: " +fullUrl);
         
-        fetch(fullUrl)
-            .then(res => res.blob())
-            .then(result => {
-                console.log(result);
-                imageObjectURL = URL.createObjectURL(result);
-                imageElement.src = imageObjectURL;
-            })
-            .catch(err=>console.log(err))         
-    }
+            fetch(fullUrl)
+                .then(res => res.blob())
+                .then(result => {
+                    console.log(result);
+                    imageObjectURL = URL.createObjectURL(result);
+                    imageElement.src = imageObjectURL;
+                })
+                .catch(err=>console.log(err))         
+        }
 
     </script>
 </head>
 <body>
-	<h1>Demo</h1>
+	<h1>Spring Image Server</h1>
 	<div class="container unauthenticated">
-        With GitHub: <a href="/oauth2/authorization/github">click here</a>
+        //alert("host: " +location.host);
+        <div>
+            With GitHub: <a href="/oauth2/authorization/github">click here</a>
+        </div>
+        <!--<div>
+            With Google: <a href="/oauth2/authorization/google">click here</a>
+        </div>-->
     </div>
     <div class="container authenticated" style="display:none">
         Logged in as: <span id="user"></span>
 
         <h2> Image Browser </h2>
 
-        <!-- Quick function to query map images from Spring Boot service. 
-            Currently only works on local machine. Added services to get images 
-            from S3 -->
+        <p> Quick application to query map images from an AWS S3 bucket using a 
+            Spring Boot service. 
+            Also has services using local file system. Application is running 
+            as a Docker image loaded from a personal repository. 
+            
+        </p>
 
         <p>Select Map Image</p>
         <p id="image-list" style="border: 2px">
@@ -83,7 +92,8 @@
                     console.log(xmlhttp.responseText);
                 }
             }
-            xmlhttp.open('GET', 'http://localhost:8080/s3-maps-list', true);
+            //alert("calling /s3-maps-list");
+            xmlhttp.open('GET', '/s3-maps-list', true);
             xmlhttp.setRequestHeader('Accept', 'application/json');
             xmlhttp.send(null);       
 
