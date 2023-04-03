@@ -81,6 +81,9 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
                 	<fork>false</fork>
+					<image>
+						<name>docker.io/pdoerr/${project.artifactId}:latest</name>
+					</image>
             	</configuration>
 			</plugin>
 		</plugins>
