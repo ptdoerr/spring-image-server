@@ -13,6 +13,6 @@ deploy-job:
     - echo "Running Maven spring-boot:build-image task"
     - "mvn spring-boot:build-image -DskipTests"
     - echo "Changing image tag to pdoerr/spring-image-server:latest"
-    - docker tag spring-image-server:0.0.1-SNAPSHOT pdoerr/spring-image-server:latest
+    - /usr/bin/docker tag spring-image-server:0.0.1-SNAPSHOT pdoerr/spring-image-server:latest
     - echo "Pushing image to docker hub"
-    - docker push pdoerr/spring-image-server:latest
+    - /usr/bin/docker push pdoerr/spring-image-server:latest
