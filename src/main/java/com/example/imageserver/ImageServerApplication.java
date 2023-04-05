@@ -1,6 +1,5 @@
 package com.example.imageserver;
 
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -18,16 +17,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
@@ -46,7 +40,8 @@ import software.amazon.awssdk.core.ResponseBytes;
 public class ImageServerApplication  {
 	//public class ImageServerApplication extends WebSecurityConfigurerAdapter {
 
-	private String imageDir = "C:/Users/phild/Documents/GitLab/COVIDdashboard/data/map-images";
+	private String imageDir = System.getenv("LOCAL_IMAGE_DIR"); 
+	//"C:/Users/phild/Documents/GitLab/COVIDdashboard/data/map-images";
 	private String s3ImageBucket = "covid-dash-ptd";
 	public static final String CONTENT_TYPE = "Content-Type";
      public static final String CONTENT_LENGTH = "Content-Length";
@@ -82,7 +77,6 @@ public class ImageServerApplication  {
 		return String.format("Hello %s!", name);
 	}
 
-	@CrossOrigin(origins = "http://localhost:8081")
 	@GetMapping("/maps-list")
 	public String mapsList() {
 		String[] pathnames = new String[] { "No Files Found"};
@@ -106,7 +100,6 @@ public class ImageServerApplication  {
 		}	
 	}
 
-	@CrossOrigin(origins = "http://localhost:8081")
 	@GetMapping("/map-image-file")
 	@ResponseBody
 	public ResponseEntity<InputStreamResource> mapImageFile(@RequestParam(value = "fname") String fname) {
@@ -133,7 +126,6 @@ public class ImageServerApplication  {
 		}
 	}
 
-	@CrossOrigin(origins = "http://localhost:8081")
 	@GetMapping("/s3-maps-list")
 	public String s3MapsList() {
 		String[] pathnames = new String[] { "No Files Found"};
@@ -174,7 +166,6 @@ public class ImageServerApplication  {
 		}	
 	}
 
-	@CrossOrigin(origins = "http://localhost:8081")
 	@GetMapping("/s3-map-image-file")
 	@ResponseBody
 	public ResponseEntity<byte[]> s3mapImageFile(@RequestParam(value = "fname") String fname) {
