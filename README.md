@@ -8,11 +8,11 @@ and display images from an AWS S3 bucket or local file system. There is a basic 
 Here's a [link to the running application.](http://66.228.55.215:8080) It's running on a Linode instance as a docker image.
 
 ## HTTP Services
-- '/user' - returns authenticated user login name
-- '/maps-list' - returns json list of files
-- '/map-image-file?fname= ' - returns map image from file system
-- '/s3-maps-list' - returns json list of files from S3 bucket
-- '/map-image-file?fname= ' - returns map image from S3 bucket
+- */user* - returns authenticated user login name
+- */maps-list* - returns json list of files
+- */map-image-file?fname= * - returns map image from file system
+- */s3-maps-list* - returns json list of files from S3 bucket
+- */map-image-file?fname= * - returns map image from S3 bucket
 
 ## Installation
 
