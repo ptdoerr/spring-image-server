@@ -42,11 +42,19 @@ public class ImageServerApplication  {
 
 	private String imageDir = System.getenv("LOCAL_IMAGE_DIR"); 
 	//"C:/Users/phild/Documents/GitLab/COVIDdashboard/data/map-images";
-	private String s3ImageBucket = "covid-dash-ptd";
+	private String s3ImageBucket = System.getenv("covid-dash-ptd");
 	public static final String CONTENT_TYPE = "Content-Type";
-     public static final String CONTENT_LENGTH = "Content-Length";
-     public static final String IMAGE_CONTENT = "image/";
+    public static final String CONTENT_LENGTH = "Content-Length";
+    public static final String IMAGE_CONTENT = "image/";
 	private S3Client s3 = null ;
+
+	public void setImageDir(String path) {
+		this.imageDir = path;
+	}
+
+	public String getImageDir() {
+		return imageDir;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(ImageServerApplication.class, args);
